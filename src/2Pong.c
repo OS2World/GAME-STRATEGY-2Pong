@@ -70,7 +70,7 @@ void start_server() {
   si_me.sin_family = AF_INET;
   si_me.sin_port = htons(PORT);
   si_me.sin_addr.s_addr = htonl(INADDR_ANY);
-  if (bind(s, &si_me, sizeof(si_me))==-1)
+  if (bind(s, (const struct sockaddr *)&si_me, sizeof(si_me))==-1)
     diep("bind");
 }
 
@@ -433,7 +433,7 @@ int main(int argc, char *argv[])
     PORT=argv[2];
     server=1;
     start_server();
-    if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1) diep("recvfrom()");
+    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, &slen)==-1) diep("recvfrom()");
     start=1; playing=1; mode=10; menu=1; levels=0;
   }
   else if (argc==4) {
@@ -444,7 +444,7 @@ int main(int argc, char *argv[])
     xs[0]=0;
     connect_server();
     sprintf(buf, "%d", j);
-    if (sendto(s, buf, BUFLEN, 0, &si_other, slen)==-1) diep("sendto()");
+    if (sendto(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, slen)==-1) diep("sendto()");
     start=1; playing=1; mode=10; menu=1; levels=0;
   }
   else {
@@ -468,15 +468,15 @@ int main(int argc, char *argv[])
 	    {
 	      if ( event.key.keysym.sym == SDLK_ESCAPE || event.key.keysym.sym == SDLK_q) { 
 		if (server==1) {
-		  if (!sr) if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1) diep("recvfrom()");
+		  if (!sr) if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, &slen)==-1) diep("recvfrom()");
 		  sprintf(buf, "%d", -666);
-		  if (sendto(s, buf, BUFLEN, 0, &si_other, slen)==-1)
+		  if (sendto(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, slen)==-1)
 		    diep("sendto()");
 		  close(s);
 		}
 		else if (server==2) {
 		  sprintf(buf, "%d", -666);
-		  if (sendto(s, buf, BUFLEN, 0, &si_other, slen)==-1) diep("sendto()");
+		  if (sendto(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, slen)==-1) diep("sendto()");
 		  close(s);
 		}
 		else if (start || playing || levels) {
@@ -626,7 +626,7 @@ int main(int argc, char *argv[])
 	timern=timern2;
 	if (server==1) {
 	  if (!sr) {
-	    if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1) diep("recvfrom()");
+	    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, &slen)==-1) diep("recvfrom()");
 	    ej[0]=atoi(buf);
 	    if (ej[0]==-666) {
 	      close(s);
@@ -636,18 +636,18 @@ int main(int argc, char *argv[])
 	  }
 	  else {
 	    sprintf(buf, "%d %f %f %f %f %f %f %f %f %d %d", j,x[0],x[1],y[0],y[1],xs[0],xs[1],ys[0],ys[1],scoree,scorep);
-	    if (sendto(s, buf, BUFLEN, 0, &si_other, slen)==-1) diep("sendto()");
+	    if (sendto(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, slen)==-1) diep("sendto()");
 	    sr=0;
 	  } 
 	}
 	else {
 	  if (!sr) {
 	    sprintf(buf, "%d", j);
-	    if (sendto(s, buf, BUFLEN, 0, &si_other, slen)==-1) diep("sendto()");
+	    if (sendto(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, slen)==-1) diep("sendto()");
 	    sr=1;
 	  }
 	  else {
-	    if (recvfrom(s, buf, BUFLEN, 0, &si_other, &slen)==-1) diep("recvfrom()");
+	    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *)&si_other, &slen)==-1) diep("recvfrom()");
 	    sep=strtok(buf," ");
 	    ej[0]=atoi(sep);
 	    ej[0]=atoi(buf);
