@@ -450,7 +450,7 @@ int main(int argc, char *argv[])
   else {
     server=0;
   }
-  SDL_AddTimer(10, callback, 7);
+  SDL_AddTimer(10, (SDL_NewTimerCallback)callback, (void *)7);
   while(done == 0)
     {
       
@@ -503,8 +503,8 @@ int main(int argc, char *argv[])
 		}
 	      }
 	      if ( event.key.keysym.sym == SDLK_s ) {
-		if (sound && spress) { sound=0; PutString (screen,  230, 230, "SOUND: OFF"); SDL_Flip(screen); SDL_Delay(400);  spress=0;  SDL_AddTimer(1000, callback2, 7); }
-		else if (spress) { sound=1; PutString (screen,  230, 230, "SOUND: ON");  SDL_Flip(screen); SDL_Delay(400);  spress=0; SDL_AddTimer(1000, callback2,7);}
+		if (sound && spress) { sound=0; PutString (screen,  230, 230, "SOUND: OFF"); SDL_Flip(screen); SDL_Delay(400);  spress=0;  SDL_AddTimer(1000, (SDL_NewTimerCallback)callback2, (void *)7); }
+		else if (spress) { sound=1; PutString (screen,  230, 230, "SOUND: ON");  SDL_Flip(screen); SDL_Delay(400);  spress=0; SDL_AddTimer(1000, (SDL_NewTimerCallback)callback2,(void *)7);}
 	      }
 	      if ( event.key.keysym.sym == SDLK_b ) {
 		if (!btime && mode!=10 && mode!=0 && bav>0) {
@@ -519,8 +519,8 @@ int main(int argc, char *argv[])
 		}
 	      }
 	      if ( event.key.keysym.sym == SDLK_f ) {
-		if (full && spress) { full=0; SDL_WM_ToggleFullScreen(screen); PutString (screen,  180, 230, "FULL SCREEN: OFF"); SDL_Flip(screen); SDL_Delay(1500);  spress=0;  SDL_AddTimer(1000, callback2,7); }
-		else if (spress) { full=1; SDL_WM_ToggleFullScreen(screen); PutString (screen,  180, 230, "FULL SCREEN: ON");  SDL_Flip(screen); SDL_Delay(1500);  spress=0; SDL_AddTimer(1000,callback2,7); SDL_WarpMouse(i,j); }
+		if (full && spress) { full=0; SDL_WM_ToggleFullScreen(screen); PutString (screen,  180, 230, "FULL SCREEN: OFF"); SDL_Flip(screen); SDL_Delay(1500);  spress=0;  SDL_AddTimer(1000, (SDL_NewTimerCallback)callback2,(void *)7); }
+		else if (spress) { full=1; SDL_WM_ToggleFullScreen(screen); PutString (screen,  180, 230, "FULL SCREEN: ON");  SDL_Flip(screen); SDL_Delay(1500);  spress=0; SDL_AddTimer(1000,(SDL_NewTimerCallback)callback2,(void *)7); SDL_WarpMouse(i,j); }
 	      }
 	      if ( event.key.keysym.sym == SDLK_r ) {
 		if (start) {
