@@ -1,5 +1,6 @@
 CFLAGS = $(shell sdl-config --cflags) -Wall
 CXXFLAGS = $(CFLAGS)
+LDFLAGS = -Zomf -Zbin-files
 LIBS = -lSDL_image $(shell sdl-config --libs) -lSDL_mixer
 OBJECTS = src/BFont.o
 PRE="/usr/local"
@@ -9,7 +10,7 @@ all: 2Pong
 
 
 2Pong: $(OBJECTS) src/2Pong.o
-	gcc $(CFLAGS) -o 2Pong $(OBJECTS) src/2Pong.o $(LIBS)
+	gcc $(CFLAGS) -o 2Pong $(OBJECTS) src/2Pong.o $(LDFLAGS) $(LIBS)
 
 
 clean:
