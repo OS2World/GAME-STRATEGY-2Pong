@@ -68,7 +68,7 @@ void start_server() {
   
   memset((char *) &si_me, sizeof(si_me), 0);
   si_me.sin_family = AF_INET;
-  si_me.sin_port = htons(PORT);
+  si_me.sin_port = htons((int)PORT);
   si_me.sin_addr.s_addr = htonl(INADDR_ANY);
   if (bind(s, (const struct sockaddr *)&si_me, sizeof(si_me))==-1)
     diep("bind");
@@ -82,7 +82,7 @@ void connect_server() {
   
   memset((char *) &si_other, sizeof(si_other), 0);
   si_other.sin_family = AF_INET;
-  si_other.sin_port = htons(PORT);
+  si_other.sin_port = htons((int)PORT);
   if (inet_aton(SRV_IP, &si_other.sin_addr)==0) {
     fprintf(stderr, "inet_aton() failed\n");
     exit(1);
