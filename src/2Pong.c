@@ -216,12 +216,12 @@ void Bounce(int i, int j) {
   for (b=0,a=1;b<=lll;b++,a--) {
     if ((y[b]>=j-10-25 && y[b]<=j+50-25) && ((x[b]>=600 && i==603) || (x[b]<=30 && i==20))) {
       xs[b]=-1*xs[b];
-      if (mode)      if (xs[b]<8.8) xs[b]=xs[b]*1.03; 
+      if (mode)      {if (xs[b]<8.8) xs[b]=xs[b]*1.03;}
       else if (xs[b]<8.8) xs[b]=xs[b]*1.03;
       if (y[b]<j+16-25 || y[b]>j+24-25) ys[b]=ys[b]+(y[b]-(j-25+20))*0.08;
       if (ys[b]>6) ys[b]=6;
       if (sound) Mix_PlayChannel(0,hit_paddle,0);
-      if (i=603 && btime) {
+      if ((i=603) && btime) {
 	btime=0;
 	xs[0]=xs[0]*4.4;
 	xs[1]=xs[1]*4.4;
@@ -294,7 +294,7 @@ void MoveBall(int k) {
 }
 
 void DrawBall(SDL_Surface *screen, int i, int j) {
-  char str[10]; int s;
+  char str[10];
   int ll;
   SDL_FillRect(screen,NULL,0x000000);
   DrawIMG(back, 0, 0);
